@@ -25,6 +25,7 @@ def go(front_left, front_right, rear_left, rear_right):
 
 def stop():
     sock.sendto("stop".encode(), (UDP_IP, UDP_PORT))
+    print("stop")
 
 def init():
     sock.sendto("init".encode(), (UDP_IP, UDP_PORT))
@@ -52,6 +53,9 @@ for event in dev.read_loop():
     elif event.code == 9:
         print("Trigger (%):", event.value/MAX)
         power = MAX_DIFF * event.value/MAX
+        if power < 10:
+            stop()
+            continue
     elif event.code == 0:
         if event.value < HALF:
             print("Stick left:", (HALF - event.value)/HALF)
@@ -64,10 +68,10 @@ for event in dev.read_loop():
         stop()
     else:
         go(
-            (power*right_mod) + MIN_POWER,
-            (power*left_mod) + MIN_POWER,
-            (power*right_mod) + MIN_POWER,
-            (power*left_mod) + MIN_POWER,
+            int((power*right_mod) + MIN_POWER),
+            int((power*left_mod) + MIN_POWER),
+            int((power*right_mod) + MIN_POWER),
+            int((power*left_mod) + MIN_POWER),
         )
 
     #if event.type == ecodes.EV_KEY:
