@@ -1,4 +1,5 @@
 import socket
+import time
 from evdev import InputDevice, categorize, ecodes
 
 dev = InputDevice('/dev/input/event19')
@@ -38,14 +39,19 @@ def init():
 MAX = 65536.0
 HALF = 32768.0
 
-MAX_DIFF = 100
+MAX_DIFF = 50
 MIN_POWER = 200
 
 power = 0
 left_mod = 1
 right_mod = 1
 
+i = 0
 for event in dev.read_loop():
+    if i % 2:
+        i += 1
+        continue
+
     if event.code == 304:
         init()
     elif event.code == 0 and event.value == 0:
@@ -73,6 +79,8 @@ for event in dev.read_loop():
             int((power*right_mod) + MIN_POWER),
             int((power*left_mod) + MIN_POWER),
         )
+
+    i += 1
 
     #if event.type == ecodes.EV_KEY:
     #    print(categorize(event))
