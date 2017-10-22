@@ -50,13 +50,13 @@ while True:
     if key == "q":
         sys.exit(0)
     elif key == "w":
-        go(100, 100, 100, 100)
+        go(50, 50, 50, 50)
     elif key == "s":
-        print("not supported")
+        stop()
     elif key == "a":
-        go(0, 100, 0, 100)
+        go(0, 50, 0, 50)
     elif key == "d":
-        go(100, 0, 100, 0)
+        go(50, 0, 50, 0)
     elif key == "e":
         stop()
     elif key == "i":
